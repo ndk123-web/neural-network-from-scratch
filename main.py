@@ -6,7 +6,6 @@ from dense.dense_layer import Dense_Layer
     Testing 
 """
 
-
 def test1():
     X = np.array(
         [
@@ -16,14 +15,20 @@ def test1():
             [1, 1, 2],
         ]
     )
-    y = [1, 1, 1, 0]
+    y = np.array([1, 0, 1, 1])
     layer1 = Dense_Layer(3, 4)
     pred1 = layer1.forward(
         X, y, learning_rate=0.01, activation_function="leaky_relu", loss="gradient"
     )
 
     layer2 = Dense_Layer(4, 3)
-    pred2 = layer2.forward(pred1, y, activation_function="relu")
+    pred2 = layer2.forward(
+        pred1,
+        y,
+        activation_function="sigmoid",
+        last_layer=True,
+        loss="categorical_cross_entropy",
+    )
     print(pred2)
 
 

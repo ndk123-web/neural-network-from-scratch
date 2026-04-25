@@ -3,6 +3,8 @@ from activations.relu import Activation_ReLU
 from activations.sigmoid import Activation_Sigmoid
 from activations.leaky_relu import Activation_LeakyReLU
 from activations.tanh import Activation_Tanh
+from loss.binary_cross_entropy import Loss_BinaryLossEntropy
+from loss.categorical_cross_entropy import Loss_CategoricalCrossEntropy
 from enum import Enum
 
 
@@ -25,9 +27,9 @@ class Dense_Layer:
 
     NOTE:
         - Each Neurons has (len(n_inputs[0]) weights) and (1 bias)
-    
+
     TODO:
-        - Feed Forward 
+        - Feed Forward
         - Back Propagation (includes loss and calculas)
     """
 
@@ -46,19 +48,21 @@ class Dense_Layer:
         self,
         X,
         y,
-        learning_rate = 0.01,
+        learning_rate=0.01,
         activation_function="relu",
         loss="categorical",
         optimizer="gradient",
         epoch=1000,
+        last_layer=False,
     ):
-        weighted_sums = np.dot(X, self.weights)
+        weighted_sums = np.dot(X, self.weights) + self.biases
 
         self.activation_function = activation_function
         self.loss = loss
         self.optimizer = optimizer
         self.learning_rate = learning_rate
         self.epoch = epoch
+        self.last_layer = last_layer
 
         # Accept either enum values or plain strings from callers.
         if isinstance(activation_function, str):
@@ -79,4 +83,15 @@ class Dense_Layer:
                 self.activation_function = Activation_ReLU()
 
         y_pred = self.activation_function.forward(weighted_sums)
+
+        if self.last_layer:
+            match self.loss:
+                case "categorical_cross_entropy":
+                    self.loss_fn = Loss_CategoricalCrossEntropy()
+                case "binary_cross_entropy":
+                    self.loss_fn = Loss_BinaryLossEntropy()
+                case _:
+                    self.loss_fn = Loss_CategoricalCrossEntropy()
+
+            print("Loss: ", self.loss_fn.loss(y, y_pred))
         return y_pred
