@@ -53,7 +53,6 @@ class Dense_Layer:
         loss="categorical",
         optimizer="gradient",
         epoch=1000,
-        last_layer=False,
     ):
         weighted_sums = np.dot(X, self.weights) + self.biases
 
@@ -62,7 +61,6 @@ class Dense_Layer:
         self.optimizer = optimizer
         self.learning_rate = learning_rate
         self.epoch = epoch
-        self.last_layer = last_layer
 
         # Accept either enum values or plain strings from callers.
         if isinstance(activation_function, str):
@@ -83,15 +81,5 @@ class Dense_Layer:
                 self.activation_function = Activation_ReLU()
 
         y_pred = self.activation_function.forward(weighted_sums)
-
-        if self.last_layer:
-            match self.loss:
-                case "categorical_cross_entropy":
-                    self.loss_fn = Loss_CategoricalCrossEntropy()
-                case "binary_cross_entropy":
-                    self.loss_fn = Loss_BinaryLossEntropy()
-                case _:
-                    self.loss_fn = Loss_CategoricalCrossEntropy()
-
-            print("Loss: ", self.loss_fn.loss(y, y_pred))
+        self.output = y_pred 
         return y_pred
