@@ -25,6 +25,10 @@ class Dense_Layer:
 
     NOTE:
         - Each Neurons has (len(n_inputs[0]) weights) and (1 bias)
+    
+    TODO:
+        - Feed Forward 
+        - Back Propagation (includes loss and calculas)
     """
 
     def __init__(self, n_inputs, n_neurons):
@@ -32,6 +36,7 @@ class Dense_Layer:
         self.weights = 0.5 * np.random.randn(n_inputs, n_neurons)
         self.biases = 0.02 * np.random.randn(1, n_neurons)
         self.activation_function = "relu"
+        self.epoch = 1000
 
     # i will do this after some time
     def validate(self):
@@ -41,10 +46,11 @@ class Dense_Layer:
         self,
         X,
         y,
-        learning_rate,
+        learning_rate = 0.01,
         activation_function="relu",
         loss="categorical",
         optimizer="gradient",
+        epoch=1000,
     ):
         weighted_sums = np.dot(X, self.weights)
 
@@ -52,6 +58,7 @@ class Dense_Layer:
         self.loss = loss
         self.optimizer = optimizer
         self.learning_rate = learning_rate
+        self.epoch = epoch
 
         # Accept either enum values or plain strings from callers.
         if isinstance(activation_function, str):
@@ -67,14 +74,6 @@ class Dense_Layer:
             case Activations.TANH:
                 self.activation_function = Activation_Tanh()
             case Activations.LEAKYRELU:
-                self.activation_function = Activation_LeakyReLU()
-            case "sigmoid":
-                self.activation_function = Activation_Sigmoid()
-            case "relu":
-                self.activation_function = Activation_ReLU()
-            case "tanh":
-                self.activation_function = Activation_Tanh()
-            case "leaky_relu":
                 self.activation_function = Activation_LeakyReLU()
             case _:
                 self.activation_function = Activation_ReLU()
