@@ -18,7 +18,10 @@ class Dense_Layer:
     NOTE:
         -  My Idea is User will create Object of Dense_Layer (here one object means 1 layer of neurons)
         - layer1 = Dense_Layer(4,5)
-        - NOTE: Here 4 is current layer neurons, 5 is next layer neurons this should be known to user
+        - NOTE:
+            -  Here 4 is current layer neurons, 5 is next layer neurons this should be known to user
+        - function forward:
+            - it will just forward the predictions to the next layers of neurons
 
     NOTE:
         - Each Neurons has (len(n_inputs[0]) weights) and (1 bias)
@@ -30,6 +33,7 @@ class Dense_Layer:
         self.biases = 0.02 * np.random.randn(1, n_neurons)
         self.activation_function = "relu"
 
+    # i will do this after some time
     def validate(self):
         pass
 
