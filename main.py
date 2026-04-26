@@ -67,8 +67,8 @@ def test3():
 
 
 def main():
-    test1()  # categorical + softmax
-    test2()  # binary + sigmoid
+    test1()  # binary + sigmoid
+    test2()  # categorical + softmax
     test3()  # mse + no activation
 
 
