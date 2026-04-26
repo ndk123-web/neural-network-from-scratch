@@ -18,5 +18,6 @@ class Loss_BinaryLossEntropy:
         y_true = np.array(y_true).reshape(-1, 1)
         y_pred = np.clip(y_pred, epsilon, 1 - epsilon)
 
+        # dL/dA
         dA = -(y_true / y_pred) + ((1 - y_true) / (1 - y_pred))
         return dA / y_pred.shape[0]

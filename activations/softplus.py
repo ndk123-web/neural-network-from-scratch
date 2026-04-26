@@ -16,6 +16,11 @@ class Activation_SoftPlus:
         self.Z = weighted_sum_arr
         return np.log1p(np.exp(weighted_sum_arr))
 
+    # here dA is dL/dA
     def backward(self, dA):
+
+        # dA/dZ
         sigmoid_z = 1 / (1 + np.exp(-self.Z))
+
+        # dA/dZ * dL/dA
         return dA * sigmoid_z

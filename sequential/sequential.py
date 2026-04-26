@@ -37,13 +37,18 @@ class Sequential:
             # ---------- LOSS ----------
             loss = self.loss.loss(y, output)
 
-            # ---------- BACKWARD ----------
+            # backward--
+            # dL/dA
             dA = self.loss.backward(output, y)
 
             for layer in reversed(self.layers):
 
                 if layer.activation_required == True:
+
+                    # dA/dZ
                     dZ = layer.activation_function.backward(dA)
+                    
+                    # send dA/dZ * dL/dA to current layer, it returns  
                     dA = layer.backward(dZ, self.lr)
 
                 else:

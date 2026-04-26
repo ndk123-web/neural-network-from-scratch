@@ -32,6 +32,11 @@ class Dense_Layer:
     NOTE:
         - Each Neurons has (len(n_inputs[0]) weights) and (1 bias)
 
+    NOTE:
+        - In Entire Network 2 main thing is must
+            1. Update the weights of each neurons of the layers
+            2. current layer must return the self error to the previous layers
+
     TODO:
         - Feed Forward
         - Back Propagation (includes loss and calculas)
@@ -98,19 +103,20 @@ class Dense_Layer:
         self.output = y_pred
         return y_pred
 
-    """
-    TODO:
-        1. get the loss by previos
-    """
-
+    # dZ = dL/dA * dA/dZ
     def backward(self, dZ, lr):
         m = self.X.shape[0]
 
-        dW = (1 / m) * self.X.T @ dZ
-        db = (1 / m) * np.sum(dZ, axis=0, keepdims=True)
+        # dW = dL/dA * dA/dZ * dZ/dW
+        # db = dL/dA * dA/dZ * dZ/db
+        dW = (1 / m) * self.X.T @ dZ  # get the slope(gradient)
+        db = (1 / m) * np.sum(dZ, axis=0, keepdims=True)  # get the bias
 
+        # we can say dA_prev is current layer error that we need to send to the previous layer
+        # it calculates error of current layer to send to the prev layer
         dA_prev = dZ @ self.weights.T
 
+        # updated weights
         self.weights -= lr * dW
         self.biases -= lr * db
 
