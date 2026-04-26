@@ -28,21 +28,21 @@ class Sequential:
         self.optimizer = optimizer
 
     def fit(self, X, y, epoch=10):
-
-        # each epoch (Batch Gradient Descent)
         for i in range(epoch):
-            # forward
+            # ---------- FORWARD ----------
             output = X
-            for dense_layer in self.layers:
-                output = dense_layer.forward(output)
+            for layer in self.layers:
+                output = layer.forward(output)
 
-            # loss
+            # ---------- LOSS ----------
             loss = self.loss.loss(y, output)
 
-            # backward
-            dZ = self.loss.backward(output, y)
+            # ---------- BACKWARD ----------
+            dA = self.loss.backward(output, y)
+
             for layer in reversed(self.layers):
-                dZ = layer.backward(dZ, self.lr)
+                dZ = layer.activation_function.backward(dA)
+                dA = layer.backward(dZ, self.lr)
 
             if i % 100 == 0:
                 print(f"Epoch {i}, Loss: {loss}")

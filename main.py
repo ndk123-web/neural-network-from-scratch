@@ -2,6 +2,7 @@ import numpy as np
 import pandas as pd
 from activations.softmax import Activation_SoftMax
 from dense.dense_layer import Dense_Layer
+from loss.binary_cross_entropy import Loss_BinaryLossEntropy
 from loss.categorical_cross_entropy import Loss_CategoricalCrossEntropy
 from activations.relu import Activation_ReLU
 from activations.sigmoid import Activation_Sigmoid
@@ -25,9 +26,9 @@ def test1():
 
     model = Sequential()
     model.add(Dense_Layer(2, 4, activation_fn="relu"))
-    model.add(Dense_Layer(4, 2, activation_fn="softmax"))
+    model.add(Dense_Layer(4, 1, activation_fn="sigmoid"))
 
-    model.compile(loss=Loss_CategoricalCrossEntropy(), lr=0.001)
+    model.compile(loss=Loss_BinaryLossEntropy(), lr=0.001)
 
     model.fit(X, y, epoch=1000)
 
@@ -52,9 +53,15 @@ def test2():
     model.fit(X, y, 2000)
 
 
+def test3():
+    X = []
+    model = Sequential()
+
+
 def main():
-    # test1()
-    test2()
+    test1()
+    # test2()
+    # test3()
 
 
 if __name__ == "__main__":

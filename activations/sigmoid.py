@@ -13,4 +13,8 @@ class Activation_Sigmoid:
         pass
 
     def forward(self, weighted_sums_arr):
-        return 1 / (1 + np.exp(-weighted_sums_arr))
+        self.output = 1 / (1 + np.exp(-weighted_sums_arr))
+        return self.output
+
+    def backward(self, dA):
+        return dA * self.output * (1 - self.output)

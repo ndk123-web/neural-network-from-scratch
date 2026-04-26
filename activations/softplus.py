@@ -13,4 +13,9 @@ class Activation_SoftPlus:
         pass
 
     def forward(self, weighted_sum_arr):
-        return np.log(1 + np.exp(weighted_sum_arr))
+        self.Z = weighted_sum_arr
+        return np.log1p(np.exp(weighted_sum_arr))
+
+    def backward(self, dA):
+        sigmoid_z = 1 / (1 + np.exp(-self.Z))
+        return dA * sigmoid_z

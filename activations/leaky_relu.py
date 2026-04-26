@@ -13,5 +13,11 @@ class Activation_LeakyReLU:
         pass
 
     def forward(self, weighted_sum_arr):
+        self.Z = weighted_sum_arr
         # max(0.1*x, x)
         return np.maximum(0.1 * weighted_sum_arr, weighted_sum_arr)
+
+    def backward(self, dA):
+        dZ = dA.copy()
+        dZ[self.Z < 0] *= 0.1
+        return dZ

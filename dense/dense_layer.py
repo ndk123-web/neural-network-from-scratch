@@ -3,6 +3,7 @@ from activations.relu import Activation_ReLU
 from activations.sigmoid import Activation_Sigmoid
 from activations.leaky_relu import Activation_LeakyReLU
 from activations.softplus import Activation_SoftPlus
+from activations.softmax import Activation_SoftMax
 from activations.tanh import Activation_Tanh
 from loss.binary_cross_entropy import Loss_BinaryLossEntropy
 from loss.categorical_cross_entropy import Loss_CategoricalCrossEntropy
@@ -15,6 +16,7 @@ class Activations(Enum):
     TANH = "tanh"
     LEAKYRELU = "leaky_relu"
     SOFTPLUS = "softplus"
+    SOFTMAX = "softmax"
 
 
 class Dense_Layer:
@@ -63,23 +65,24 @@ class Dense_Layer:
         self.learning_rate = learning_rate
         self.epoch = epoch
 
-        # Accept either enum values or plain strings from callers.
-        if isinstance(activation_function, str):
-            activation_function = activation_function.lower()
-        elif isinstance(activation_function, Activations):
-            activation_function = activation_function.value
+        activation_name = self.activation_name
+        if isinstance(activation_name, Activations):
+            activation_name = activation_name.value
+        activation_name = str(activation_name).lower()
 
-        match self.activation_name:
-            case Activations.SIGMOID:
+        match activation_name:
+            case "sigmoid":
                 self.activation_function = Activation_Sigmoid()
-            case Activations.RELU:
+            case "relu":
                 self.activation_function = Activation_ReLU()
-            case Activations.TANH:
+            case "tanh":
                 self.activation_function = Activation_Tanh()
-            case Activations.LEAKYRELU:
+            case "leaky_relu":
                 self.activation_function = Activation_LeakyReLU()
-            case Activations.SOFTPLUS:
+            case "softplus":
                 self.activation_function = Activation_SoftPlus()
+            case "softmax":
+                self.activation_function = Activation_SoftMax()
             case _:
                 self.activation_function = Activation_ReLU()
 

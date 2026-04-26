@@ -13,9 +13,10 @@ class Activation_Tanh:
         pass
 
     def forward(self, weighted_sum_arr):
-        return (np.exp(weighted_sum_arr) - (np.exp(-weighted_sum_arr))) / (
+        self.output = (np.exp(weighted_sum_arr) - (np.exp(-weighted_sum_arr))) / (
             np.exp(weighted_sum_arr) + (np.exp(-weighted_sum_arr))
         )
-    
-    def derivative(self):
-        pass
+        return self.output
+
+    def backward(self, dA):
+        return dA * (1 - np.square(self.output))
