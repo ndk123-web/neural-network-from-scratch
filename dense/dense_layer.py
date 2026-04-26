@@ -2,6 +2,7 @@ import numpy as np
 from activations.relu import Activation_ReLU
 from activations.sigmoid import Activation_Sigmoid
 from activations.leaky_relu import Activation_LeakyReLU
+from activations.softplus import Activation_SoftPlus
 from activations.tanh import Activation_Tanh
 from loss.binary_cross_entropy import Loss_BinaryLossEntropy
 from loss.categorical_cross_entropy import Loss_CategoricalCrossEntropy
@@ -13,6 +14,7 @@ class Activations(Enum):
     RELU = "relu"
     TANH = "tanh"
     LEAKYRELU = "leaky_relu"
+    SOFTPLUS = "softplus"
 
 
 class Dense_Layer:
@@ -76,6 +78,8 @@ class Dense_Layer:
                 self.activation_function = Activation_Tanh()
             case Activations.LEAKYRELU:
                 self.activation_function = Activation_LeakyReLU()
+            case Activations.SOFTPLUS:
+                self.activation_function = Activation_SoftPlus()
             case _:
                 self.activation_function = Activation_ReLU()
 

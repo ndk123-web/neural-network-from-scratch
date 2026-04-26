@@ -32,8 +32,29 @@ def test1():
     model.fit(X, y, epoch=1000)
 
 
+def test2():
+    X = np.array(
+        [
+            [1, 2, 3],
+            [4, 5, 6],
+            [7, 8, 9],
+            [10, 11, 12],
+        ]
+    )
+    y = np.array([0, 0, 1, 2])
+    model = Sequential()
+
+    model.add(Dense_Layer(3, 3, activation_fn="softplus"))
+    model.add(Dense_Layer(3, 3, activation_fn="softmax"))
+
+    model.compile(loss=Loss_CategoricalCrossEntropy(), lr=0.1)
+
+    model.fit(X, y, 2000)
+
+
 def main():
-    test1()
+    # test1()
+    test2()
 
 
 if __name__ == "__main__":
