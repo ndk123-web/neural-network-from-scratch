@@ -1,12 +1,9 @@
 import numpy as np
-import pandas as pd
-from activations.softmax import Activation_SoftMax
 from dense.dense_layer import Dense_Layer
 from loss.binary_cross_entropy import Loss_BinaryLossEntropy
 from loss.categorical_cross_entropy import Loss_CategoricalCrossEntropy
-from activations.relu import Activation_ReLU
-from activations.sigmoid import Activation_Sigmoid
 from sequential.sequential import Sequential
+from loss.mse import Loss_MSE
 
 """
     Testing 
@@ -54,14 +51,25 @@ def test2():
 
 
 def test3():
-    X = []
+    X = np.array([[1, 1, 2], [2, 1, 1], [1, 5, 10], [11, 10, 100]])
+
+    y = np.array([9, 10, 20, 50])
     model = Sequential()
+
+    model.add(Dense_Layer(3, 4, activation_fn="relu"))
+    model.add(
+        Dense_Layer(4, 1, activation_required=False)
+    )  # we dont require activation in last
+
+    model.compile(loss=Loss_MSE(), lr=0.0005)
+
+    model.fit(X, y, 2000)
 
 
 def main():
-    test1()
-    # test2()
-    # test3()
+    test1()  # categorical + softmax
+    test2()  # binary + sigmoid
+    test3()  # mse + no activation
 
 
 if __name__ == "__main__":

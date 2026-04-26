@@ -41,8 +41,13 @@ class Sequential:
             dA = self.loss.backward(output, y)
 
             for layer in reversed(self.layers):
-                dZ = layer.activation_function.backward(dA)
-                dA = layer.backward(dZ, self.lr)
+
+                if layer.activation_required == True:
+                    dZ = layer.activation_function.backward(dA)
+                    dA = layer.backward(dZ, self.lr)
+
+                else:
+                    dA = layer.backward(dA, self.lr)
 
             if i % 100 == 0:
                 print(f"Epoch {i}, Loss: {loss}")

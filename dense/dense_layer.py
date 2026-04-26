@@ -37,12 +37,15 @@ class Dense_Layer:
         - Back Propagation (includes loss and calculas)
     """
 
-    def __init__(self, n_inputs, n_neurons, activation_fn):
+    def __init__(
+        self, n_inputs, n_neurons, activation_fn="relu", activation_required=True
+    ):
         self.name = "Ndk"
         self.weights = 0.5 * np.random.randn(n_inputs, n_neurons)
         self.biases = 0.02 * np.random.randn(1, n_neurons)
         self.activation_name = activation_fn
         self.epoch = 1000
+        self.activation_required = activation_required
 
     # i will do this after some time
     def validate(self):
@@ -85,6 +88,11 @@ class Dense_Layer:
                 self.activation_function = Activation_SoftMax()
             case _:
                 self.activation_function = Activation_ReLU()
+
+        # if it not required activations (in case of regression``)
+        if self.activation_required == False:
+            self.output = weighted_sums
+            return self.output
 
         y_pred = self.activation_function.forward(weighted_sums)
         self.output = y_pred
