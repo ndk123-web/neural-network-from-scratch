@@ -47,16 +47,16 @@ class Dense_Layer:
     def forward(
         self,
         X,
-        y,
         learning_rate=0.01,
         activation_function="relu",
         loss="categorical",
         optimizer="gradient",
         epoch=1000,
     ):
+        self.X = X
         weighted_sums = np.dot(X, self.weights) + self.biases
 
-        self.activation_function = activation_function
+        self.activation_name = activation_function
         self.loss = loss
         self.optimizer = optimizer
         self.learning_rate = learning_rate
@@ -68,7 +68,7 @@ class Dense_Layer:
         elif isinstance(activation_function, Activations):
             activation_function = activation_function.value
 
-        match activation_function:
+        match self.activation_name:
             case Activations.SIGMOID:
                 self.activation_function = Activation_Sigmoid()
             case Activations.RELU:
@@ -81,5 +81,23 @@ class Dense_Layer:
                 self.activation_function = Activation_ReLU()
 
         y_pred = self.activation_function.forward(weighted_sums)
-        self.output = y_pred 
+        self.output = y_pred
         return y_pred
+
+    """
+    TODO:
+        1. get the loss by previos
+    """
+
+    def backward(self, dZ, lr):
+        m = self.X.shape[0]
+
+        dW = (1 / m) * self.X.T @ dZ
+        db = (1 / m) * np.sum(dZ, axis=0, keepdims=True)
+
+        dA_prev = dZ @ self.weights.T
+
+        self.weights -= lr * dW
+        self.biases -= lr * db
+
+        return dA_prev

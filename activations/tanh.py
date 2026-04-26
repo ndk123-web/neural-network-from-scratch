@@ -16,3 +16,6 @@ class Activation_Tanh:
         return (np.exp(weighted_sum_arr) - (np.exp(-weighted_sum_arr))) / (
             np.exp(weighted_sum_arr) + (np.exp(-weighted_sum_arr))
         )
+    
+    def derivative(self):
+        pass

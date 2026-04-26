@@ -12,5 +12,11 @@ class Activation_ReLU:
     def __init__(self):
         pass
 
-    def forward(self, weighted_sums_arr):
-        return np.maximum(0, weighted_sums_arr)
+    def forward(self, Z):
+        self.Z = Z
+        return np.maximum(0, Z)
+
+    def backward(self, dA):
+        dZ = dA.copy()
+        dZ[self.Z <= 0] = 0
+        return dZ
