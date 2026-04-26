@@ -33,11 +33,11 @@ class Dense_Layer:
         - Back Propagation (includes loss and calculas)
     """
 
-    def __init__(self, n_inputs, n_neurons):
+    def __init__(self, n_inputs, n_neurons, activation_fn):
         self.name = "Ndk"
         self.weights = 0.5 * np.random.randn(n_inputs, n_neurons)
         self.biases = 0.02 * np.random.randn(1, n_neurons)
-        self.activation_function = "relu"
+        self.activation_name = activation_fn
         self.epoch = 1000
 
     # i will do this after some time
@@ -56,7 +56,6 @@ class Dense_Layer:
         self.X = X
         weighted_sums = np.dot(X, self.weights) + self.biases
 
-        self.activation_name = activation_function
         self.loss = loss
         self.optimizer = optimizer
         self.learning_rate = learning_rate

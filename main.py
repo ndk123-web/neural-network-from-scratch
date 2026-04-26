@@ -5,6 +5,7 @@ from dense.dense_layer import Dense_Layer
 from loss.categorical_cross_entropy import Loss_CategoricalCrossEntropy
 from activations.relu import Activation_ReLU
 from activations.sigmoid import Activation_Sigmoid
+from sequential.sequential import Sequential
 
 """
     Testing 
@@ -22,30 +23,13 @@ def test1():
     )
     y = np.array([0, 1, 0, 1])
 
-    layer1 = Dense_Layer(2, 4)
-    activation1 = Activation_ReLU()
+    model = Sequential()
+    model.add(Dense_Layer(2, 4, activation_fn="relu"))
+    model.add(Dense_Layer(4, 2, activation_fn="softmax"))
 
-    layer2 = Dense_Layer(4, 2)
-    activation2 = Activation_SoftMax()
+    model.compile(loss=Loss_CategoricalCrossEntropy(), lr=0.001)
 
-    epoch = 1000
-    for i in range(epoch):
-        # forward
-        Z1 = layer1.forward(X)
-        A1 = activation1.forward(Z1)
-
-        Z2 = layer2.forward(A1)
-        A2 = activation2.forward(Z2)
-
-        # calculate loss wrt Z
-        loss = Loss_CategoricalCrossEntropy()
-        dL_by_dZ = loss.backward(A2, y)
-        if i % 100 == 0:
-            print("Loss:", loss.loss(y, A2))
-
-        # Dense Backward
-        dA1 = layer2.backward(dL_by_dZ, 0.01)
-        layer1.backward(dA1, 0.1)
+    model.fit(X, y, epoch=1000)
 
 
 def main():
