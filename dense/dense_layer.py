@@ -46,8 +46,10 @@ class Dense_Layer:
         self, n_inputs, n_neurons, activation_fn="relu", activation_required=True
     ):
         self.name = "Ndk"
-        self.weights = 0.5 * np.random.randn(n_inputs, n_neurons)
-        self.biases = 0.02 * np.random.randn(1, n_neurons)
+        # Xavier-style scaling gives more stable gradients than large random weights.
+        weight_scale = np.sqrt(1.0 / max(1, n_inputs))
+        self.weights = np.random.randn(n_inputs, n_neurons) * weight_scale
+        self.biases = np.zeros((1, n_neurons))
         self.activation_name = activation_fn
         self.epoch = 1000
         self.activation_required = activation_required

@@ -26,8 +26,16 @@ class Sequential:
         self.loss = loss
         self.lr = lr
         self.optimizer = optimizer
+        self.loss_history = []
 
-    def fit(self, X, y, epoch=10):
+    def predict(self, X):
+        output = X
+        for layer in self.layers:
+            output = layer.forward(output)
+        return output
+
+    def fit(self, X, y, epoch=10, verbose=True):
+        self.loss_history = []
         for i in range(epoch):
             # ---------- FORWARD ----------
             output = X
@@ -36,6 +44,7 @@ class Sequential:
 
             # ---------- LOSS ----------
             loss = self.loss.loss(y, output)
+            self.loss_history.append(float(loss))
 
             # backward--
             # dL/dA
@@ -54,5 +63,7 @@ class Sequential:
                 else:
                     dA = layer.backward(dA, self.lr)
 
-            if i % 100 == 0:
+            if verbose and i % 100 == 0:
                 print(f"Epoch {i}, Loss: {loss}")
+
+        return self.loss_history
