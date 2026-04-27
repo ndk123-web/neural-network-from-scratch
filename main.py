@@ -45,7 +45,7 @@ def test2():
     model.add(Dense_Layer(3, 3, activation_fn="softplus"))
     model.add(Dense_Layer(3, 3, activation_fn="softmax"))
 
-    model.compile(loss=Loss_CategoricalCrossEntropy(), lr=0.1)
+    model.compile(loss=Loss_CategoricalCrossEntropy(), lr=0.1, optimizer="sgd")
 
     model.fit(X, y, 2000)
 
@@ -66,10 +66,24 @@ def test3():
     model.fit(X, y, 2000)
 
 
+def test4():
+    X = np.array([[1, 2, 3], [4, 5, 6], [7,8,9], [100, 20, 19]])
+    y = np.array([1, 0, 1, 2])
+    model = Sequential()
+
+    model.add(Dense_Layer(3, 2))
+    model.add(Dense_Layer(2, 3))
+
+    model.compile(loss=Loss_CategoricalCrossEntropy(), optimizer="sgd", lr=0.005)
+
+    model.fit(X, y, 1000)
+
+
 def main():
-    test1()  # binary + sigmoid
+    # test1()  # binary + sigmoid
     test2()  # categorical + softmax
-    test3()  # mse + no activation
+    # test3()  # mse + no activation
+    # test4()  # test SGD optimizer
 
 
 if __name__ == "__main__":
